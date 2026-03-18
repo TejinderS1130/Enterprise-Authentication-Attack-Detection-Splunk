@@ -165,7 +165,7 @@ This scenario simulates an SSH brute force attack from an external attacker and 
 
 ---
 
-## 📌 Detection Logic (Splunk SPL)
+## Detection Logic (Splunk SPL)
 
 ### Baseline Detection (Implemented in Lab)
 
