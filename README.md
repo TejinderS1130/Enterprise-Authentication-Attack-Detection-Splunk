@@ -76,33 +76,34 @@ This lab replicates a **real-world enterprise SOC environment** with:
                                       │  (Simulated Threat Actor) │
                                       └───────────────────────────┘
 ```
+
 ##  Data Flow (Detection Pipeline)
 
-1️⃣ Attacker (Kali Linux) launches attacks:
+1️) Attacker (Kali Linux) launches attacks:
 
 * SSH brute force
 * RDP brute force
 * VPN authentication attempts
 * Password spraying
 
-2️⃣ Target systems generate logs:
+2️) Target systems generate logs:
 
 * Linux → `/var/log/auth.log`
 * Windows → Event ID 4625 / 4624
 * pfSense/OpenVPN → Authentication logs
 
-3️⃣ Logs are forwarded to Splunk SIEM:
+3️) Logs are forwarded to Splunk SIEM:
 
 * Centralized ingestion
 * Field extraction & normalization
 
-4️⃣ Splunk performs detection:
+4️) Splunk performs detection:
 
 * SPL detection queries
 * Cross-source correlation
 * Alert generation
 
-5️⃣ SOC investigation:
+5️) SOC investigation:
 
 * Identify attacker IP
 * Analyze targeted accounts
@@ -130,7 +131,3 @@ This lab demonstrates key SOC capabilities:
 * End-to-end detection workflow
 * SIEM-driven investigation
 
----
-
-                              
-<img width="468" height="650" alt="image" src="https://github.com/user-attachments/assets/5b069cd9-5a3a-47e3-8a15-749457a07819" />
