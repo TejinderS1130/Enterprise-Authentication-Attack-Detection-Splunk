@@ -133,42 +133,70 @@ This lab demonstrates key SOC capabilities:
 
 ---
 
-# 🔐 SSH Brute Force Attack (Linux)
+# SSH Brute Force Attack (Linux)
 
 This scenario simulates an SSH brute force attack from an external attacker and demonstrates detection, alerting, and investigation using Splunk SIEM.
 
 ---
 
-## 🧪 Attack Simulation
+## Attack Simulation
 
-<img src="screenshots/ssh/figure1_hydra_attack.png" width="1000">
-
----
-
-## 🔍 Detection in Splunk
-
-<img src="screenshots/ssh/figure2_splunk_detection.png" width="1000">
+<img src="screenshots/ssh/Figure1-Hydra_Attack.png" width="1000">
 
 ---
 
-## 🚨 Alert Triggered
+## Detection in Splunk
 
-<img src="screenshots/ssh/figure3_alert_triggered.png" width="1000">
+<img src="screenshots/ssh/Figure2-Splunk_Detection.png" width="1000">
 
 ---
 
-## 🧠 SOC Investigation
+## Alert Triggered
+
+<img src="screenshots/ssh/Figure3-Alert_Triggered.png" width="1000">
+
+---
+
+## SOC Investigation
 
 **Attacker IP:** 192.168.1.60
 
-<img src="screenshots/ssh/figure4_alert_details.png" width="1000">
+<img src="screenshots/ssh/Figure4_Alert_Details.png" width="1000">
 
 ---
 
-## 📌 Detection Logic
+````markdown
+## 📌 Detection Logic (Splunk SPL)
+
+### 🟢 Baseline Detection (Implemented in Lab)
 
 ```spl
 index=linux "Failed password"
 | rex "from (?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| bucket _time span=1m
 | stats count by src_ip
-| where count > 20
+| where count >= 20
+````
+
+This detection identifies a high number of failed login attempts from a single source IP.
+
+---
+
+### Advanced Detection (SOC-Level Improvement)
+
+```spl
+index=linux "Failed password"
+| rex "from (?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| bucket _time span=1m
+| stats count by _time, src_ip
+| where count >= 20
+```
+
+This enhanced detection introduces time-based analysis to identify spikes of authentication failures within short intervals, which is a strong indicator of automated brute force activity.
+
+This reflects real-world SOC practices where detections are refined using time-based thresholds to reduce false positives and improve attack visibility.
+
+```
+```
+
+ 
