@@ -161,14 +161,13 @@ This scenario simulates an SSH brute force attack from an external attacker and 
 
 **Attacker IP:** 192.168.1.60
 
-<img src="screenshots/ssh/Figure4_Alert_Details.png" width="1000">
+<img src="screenshots/ssh/Figure4- Alert_Details.png" width="1000">
 
 ---
 
-````markdown
 ## 📌 Detection Logic (Splunk SPL)
 
-### 🟢 Baseline Detection (Implemented in Lab)
+### Baseline Detection (Implemented in Lab)
 
 ```spl
 index=linux "Failed password"
@@ -176,7 +175,7 @@ index=linux "Failed password"
 | bucket _time span=1m
 | stats count by src_ip
 | where count >= 20
-````
+```
 
 This detection identifies a high number of failed login attempts from a single source IP.
 
