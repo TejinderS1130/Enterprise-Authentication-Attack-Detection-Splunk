@@ -141,7 +141,7 @@ This scenario simulates an SSH brute force attack from an external attacker and 
 
 ## Attack Simulation
 
-<img src="screenshots/ssh/Figure1-Hydra_Attack.png" width="1000">
+<img src="screenshots/ssh/Figure1_Hydra_Attack.png" width="1000">
 
 ---
 
