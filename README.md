@@ -131,3 +131,44 @@ This lab demonstrates key SOC capabilities:
 * End-to-end detection workflow
 * SIEM-driven investigation
 
+---
+
+# 🔐 SSH Brute Force Attack (Linux)
+
+This scenario simulates an SSH brute force attack from an external attacker and demonstrates detection, alerting, and investigation using Splunk SIEM.
+
+---
+
+## 🧪 Attack Simulation
+
+<img src="screenshots/ssh/figure1_hydra_attack.png" width="1000">
+
+---
+
+## 🔍 Detection in Splunk
+
+<img src="screenshots/ssh/figure2_splunk_detection.png" width="1000">
+
+---
+
+## 🚨 Alert Triggered
+
+<img src="screenshots/ssh/figure3_alert_triggered.png" width="1000">
+
+---
+
+## 🧠 SOC Investigation
+
+**Attacker IP:** 192.168.1.60
+
+<img src="screenshots/ssh/figure4_alert_details.png" width="1000">
+
+---
+
+## 📌 Detection Logic
+
+```spl
+index=linux "Failed password"
+| rex "from (?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| stats count by src_ip
+| where count > 20
