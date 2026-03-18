@@ -195,11 +195,7 @@ This enhanced detection introduces time-based analysis to identify spikes of aut
 
 This reflects real-world SOC practices where detections are refined using time-based thresholds to reduce false positives and improve attack visibility.
 
-Here you go — **just copy-paste this directly into your README** 👇
-
-````markdown
 ---
-
 # Password Spray Attack (Linux)
 
 This scenario simulates a password spray attack where a single attacker attempts authentication across multiple user accounts using a common password.
