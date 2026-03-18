@@ -196,6 +196,7 @@ This enhanced detection introduces time-based analysis to identify spikes of aut
 This reflects real-world SOC practices where detections are refined using time-based thresholds to reduce false positives and improve attack visibility.
 
 ---
+
 # 2) Password Spray Attack (Linux)
 
 This scenario simulates a password spray attack where a single attacker attempts authentication across multiple user accounts using a common password.
@@ -266,6 +267,93 @@ This detection identifies password spray attacks by detecting a single source IP
 * Triggered alert based on abnormal authentication pattern
 * Simulated real-world credential-based attack scenario
 
+
+---
+
+## 3) Windows RDP Brute Force Attack
+
+This scenario simulates a brute force attack against a Windows system using RDP and demonstrates detection and investigation using Splunk SIEM.
+
+---
+
+## Attack Simulation
+
+The attacker machine scanned the target for open RDP port **3389** and attempted multiple login attempts using different credentials.
+
+```bash
+nmap -p 3389 192.168.1.20
+xfreerdp /v:192.168.1.20 /u:Administrator
+```
+
+A custom password list was used to simulate brute force attempts.
+
+<img src="screenshots/rdp/Figure2_Nmap_RDP_Port_Scan.png" width="1000">
+
+<img src="screenshots/rdp/Figure4_RDP_BruteForce_Attempt.png" width="1000">
+
+---
+
+## Detection in Splunk
+
+Failed RDP login attempts were identified using Windows Security Event Logs:
+
+* **EventCode 4625 → Failed login**
+* Source IP: attacker machine
+
+```spl
+index=windows EventCode=4625
+| stats count by Source_Network_Address
+| sort -count
+```
+
+<img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="1000">
+
+---
+
+## Alert Triggered
+
+A Splunk alert was configured to trigger when failed login attempts exceeded a threshold.
+
+```spl
+index=windows EventCode=4625
+| stats count by Source_Network_Address Account_Name
+| where count > 5
+| sort -count
+```
+
+<img src="screenshots/rdp/Figure8_RDP_BruteForce_Alert.png" width="1000">
+
+---
+
+## SOC Investigation
+
+Further analysis shows:
+
+* Attacker IP: **192.168.1.60 (Kali Linux)**
+* Targeted accounts: Administrator and multiple users
+* Logon Type: **3 (Network Logon)**
+
+```spl
+index=windows EventCode=4625
+| eval src_ip=coalesce(Source_Network_Address, Client_Address)
+| stats count values(Account_Name) as targeted_accounts by src_ip
+| sort -count
+```
+
+<img src="screenshots/rdp/Figure12_Targeted_Accounts.png" width="1000">
+
+---
+
+## 📌 Advanced Detection (Time-Based)
+
+```spl
+index=windows EventCode=4625
+| bucket _time span=1m
+| stats count by _time Source_Network_Address
+| where count > 4
+```
+
+---
 
 
 
