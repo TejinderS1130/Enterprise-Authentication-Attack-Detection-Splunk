@@ -344,7 +344,7 @@ index=windows EventCode=4625
 
 ---
 
-## 📌 Advanced Detection (Time-Based)
+## Advanced Detection (Time-Based)
 
 ```spl
 index=windows EventCode=4625
