@@ -133,7 +133,7 @@ This lab demonstrates key SOC capabilities:
 
 ---
 
-# SSH Brute Force Attack (Linux)
+# 1) SSH Brute Force Attack (Linux)
 
 This scenario simulates an SSH brute force attack from an external attacker and demonstrates detection, alerting, and investigation using Splunk SIEM.
 
@@ -196,7 +196,7 @@ This enhanced detection introduces time-based analysis to identify spikes of aut
 This reflects real-world SOC practices where detections are refined using time-based thresholds to reduce false positives and improve attack visibility.
 
 ---
-# Password Spray Attack (Linux)
+# 2) Password Spray Attack (Linux)
 
 This scenario simulates a password spray attack where a single attacker attempts authentication across multiple user accounts using a common password.
 
