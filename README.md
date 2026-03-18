@@ -195,7 +195,82 @@ This enhanced detection introduces time-based analysis to identify spikes of aut
 
 This reflects real-world SOC practices where detections are refined using time-based thresholds to reduce false positives and improve attack visibility.
 
-```
-```
+Here you go — **just copy-paste this directly into your README** 👇
+
+````markdown
+---
+
+# Password Spray Attack (Linux)
+
+This scenario simulates a password spray attack where a single attacker attempts authentication across multiple user accounts using a common password.
+
+---
+
+## Attack Simulation
+
+The attacker used a list of usernames to attempt authentication using the same password.
+
+<img src="screenshots/password_spray/figure1_password_spray_attack.png" width="1000">
+
+---
+
+## Detection in Splunk
+
+Detection focuses on identifying a single source IP targeting multiple distinct user accounts.
+
+<img src="screenshots/password_spray/figure2_splunk_detection.png" width="1000">
+
+---
+
+## Alert Triggered
+
+An alert is generated when multiple accounts are targeted from the same source IP.
+
+<img src="screenshots/password_spray/figure3_alert_triggered.png" width="1000">
+
+---
+
+## SOC Investigation
+
+The investigation confirms multiple distinct user accounts targeted from attacker IP:
+
+**192.168.1.60**
+
+<img src="screenshots/password_spray/figure4_investigation.png" width="1000">
+
+---
+
+## Detection Logic (Splunk SPL)
+
+```spl
+index=linux "Failed password"
+| rex "from (?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| rex "for (invalid user )?(?<user>\w+)"
+| bucket _time span=5m
+| stats dc(user) as unique_users count by src_ip
+| where unique_users >= 5 AND count >= 10
+````
+
+This detection identifies password spray attacks by detecting a single source IP attempting authentication across multiple distinct user accounts within a short time window.
+
+---
+
+## MITRE ATT&CK Mapping
+
+| Tactic            | Technique         | ID        |
+| ----------------- | ----------------- | --------- |
+| Credential Access | Password Spraying | T1110.003 |
+
+---
+
+## Outcome
+
+* Detected multiple account targeting behavior
+* Identified attacker IP
+* Triggered alert based on abnormal authentication pattern
+* Simulated real-world credential-based attack scenario
+
+
+
 
  
