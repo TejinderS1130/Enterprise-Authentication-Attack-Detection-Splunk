@@ -314,6 +314,7 @@ index=windows (EventCode=4625 OR EventCode=4624)
 A Splunk alert was configured to trigger when failed login attempts exceeded a threshold.
 
 <img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="1000">
+
 ---
 
 ## SOC Investigation
@@ -346,6 +347,7 @@ index=windows EventCode=4625
 | sort -count
 ```
 <img src="screenshots/rdp/Figure13_Event_Correlation_View.png" width="1000">
+
 ---
 
 
