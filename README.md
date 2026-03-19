@@ -350,6 +350,115 @@ index=windows EventCode=4625
 
 ---
 
+# 4) OpenVPN Brute Force Attack
+
+This scenario simulates a brute force attack against an OpenVPN service and demonstrates detection and investigation using Splunk SIEM.
+
+---
+
+## Attack Simulation
+
+The attacker machine attempted multiple authentication attempts against the VPN service using invalid credentials.
+
+```bash
+sudo openvpn ~/Desktop/pfSense-UDP4-1194-vpnuser-config.ovpn
+````
+
+<img src="screenshots/vpn/Figure1_OpenVPN_BruteForce_Attempt.png" width="1000">
+
+---
+
+## Detection in Splunk
+
+Failed VPN authentication attempts were identified using pfSense OpenVPN logs.
+
+* **AUTH_FAILED → Failed login**
+* Source IP: attacker machine
+
+```spl
+index=pfsense "AUTH_FAILED"
+| stats count by src_ip
+| sort -count
+```
+
+<img src="screenshots/vpn/Figure2_VPN_Failed_Logins.png" width="1000">
+
+---
+
+## Alert Triggered
+
+A detection rule was created to identify repeated authentication failures from a single source.
+
+```spl
+index=pfsense "AUTH_FAILED"
+| rex field=_raw "(?<src_ip>\d+\.\d+\.\d+\.\d+):\d+"
+| stats count by src_ip
+| where count > 5
+```
+
+<img src="screenshots/vpn/Figure3_VPN_BruteForce_Detection.png" width="1000">
+
+---
+
+## SOC Investigation
+
+Further analysis confirms brute force activity:
+
+* Attacker IP: **192.168.1.60 (Kali Linux)**
+* Target account: **vpnuser**
+* Multiple failed authentication attempts observed
+
+```spl
+index=pfsense "connected"
+| rex "user '(?<user>[^']+)'"
+| rex "address (?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| table _time user src_ip
+```
+
+<img src="screenshots/vpn/Figure4_VPN_Successful_Login.png" width="1000">
+
+---
+
+## Advanced Detection & Correlation
+
+This detection correlates failed and successful authentication attempts from the same source IP.
+
+```spl
+index=pfsense ("AUTH_FAILED" OR "connected")
+| rex field=_raw "(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| stats 
+    count(eval(searchmatch("AUTH_FAILED"))) as failures
+    count(eval(searchmatch("connected"))) as success
+    by src_ip
+| where failures >= 5 AND success >= 1
+```
+
+<img src="screenshots/vpn/Figure5_VPN_Correlation_Detection.png" width="1000">
+
+---
+
+## MITRE ATT&CK Mapping
+
+| Tactic            | Technique         | ID        |
+| ----------------- | ----------------- | --------- |
+| Credential Access | Brute Force       | T1110     |
+| Credential Access | Password Spraying | T1110.003 |
+
+---
+
+## Outcome
+
+* Detected repeated VPN authentication failures
+* Identified attacker IP address
+* Correlated failed and successful login attempts
+* Simulated real-world VPN attack scenario
+* Demonstrated SOC-level detection and investigation workflow
+
+---
+
+```
+
+
 
 
  
