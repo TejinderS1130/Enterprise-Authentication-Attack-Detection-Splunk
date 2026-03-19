@@ -6,7 +6,7 @@ Enterprise SOC detection lab demonstrating authentication attack detection acros
 
 # Project Overview
 
-This lab simulates real-world authentication attacks across multiple systems and demonstrates how a Security Operations Center (SOC) detects and investigates them using centralized logging and SIEM analytics.
+This project focuses on detecting authentication-based attacks and correlating events across multiple systems using Splunk SIEM.
 
 ### Attacks Simulated
 
@@ -246,7 +246,7 @@ index=linux "Failed password"
 | bucket _time span=5m
 | stats dc(user) as unique_users count by src_ip
 | where unique_users >= 5 AND count >= 10
-````
+```
 
 This detection identifies password spray attacks by detecting a single source IP attempting authentication across multiple distinct user accounts within a short time window.
 
@@ -476,5 +476,20 @@ index=pfsense ("AUTH_FAILED" OR "connected")
 * Correlated failed and successful login attempts
 * Simulated real-world VPN attack scenario
 * Demonstrated SOC-level detection and investigation workflow
+
+---
+
+## Cross-Platform SOC Insight
+
+Across all scenarios (SSH, RDP, VPN), the same attacker IP **192.168.1.60** was observed:
+
+- Performing brute force attacks on Linux (SSH)
+- Targeting multiple accounts (password spray)
+- Attempting RDP authentication on Windows
+- Attacking VPN authentication
+
+This demonstrates a **real-world attack pattern**, where a threat actor targets multiple entry points within an environment.
+
+Such activity can be detected through **cross-source correlation in SIEM**, a key capability of modern SOC operations.
 
 ---
