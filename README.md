@@ -455,10 +455,3 @@ index=pfsense ("AUTH_FAILED" OR "connected")
 * Demonstrated SOC-level detection and investigation workflow
 
 ---
-
-```
-
-
-
-
- 
