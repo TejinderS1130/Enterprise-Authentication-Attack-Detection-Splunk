@@ -364,7 +364,7 @@ The attacker machine attempted multiple authentication attempts against the VPN 
 sudo openvpn ~/Desktop/pfSense-UDP4-1194-vpnuser-config.ovpn
 ````
 
-<img src="screenshots/vpn/Figure1_OpenVPN_BruteForce_Attempt.png" width="1000">
+<img src="screenshots/vpn/Figure1_VPN_Attack_Terminal.png" width="1000">
 
 ---
 
@@ -381,7 +381,7 @@ index=pfsense "AUTH_FAILED"
 | sort -count
 ```
 
-<img src="screenshots/vpn/Figure2_VPN_Failed_Logins.png" width="1000">
+<img src="screenshots/vpn/Figure2_VPN_Failed_Logs.png" width="1000">
 
 ---
 
@@ -415,7 +415,7 @@ index=pfsense "connected"
 | table _time user src_ip
 ```
 
-<img src="screenshots/vpn/Figure4_VPN_Successful_Login.png" width="1000">
+<img src="screenshots/vpn/Figure4_VPN_Success_Login.png" width="1000">
 
 ---
 
@@ -433,7 +433,7 @@ index=pfsense ("AUTH_FAILED" OR "connected")
 | where failures >= 5 AND success >= 1
 ```
 
-<img src="screenshots/vpn/Figure5_VPN_Correlation_Detection.png" width="1000">
+<img src="screenshots/vpn/Figure5_VPN_Correlation.png" width="1000">
 
 ---
 
