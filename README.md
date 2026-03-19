@@ -350,6 +350,29 @@ index=windows EventCode=4625
 
 ---
 
+
+## MITRE ATT&CK Mapping
+
+| Tactic              | Technique                     | ID        |
+|---------------------|-------------------------------|----------|
+| Credential Access   | Brute Force                  | T1110    |
+| Initial Access      | Valid Accounts               | T1078    |
+| Lateral Movement    | Remote Services (RDP)        | T1021.001 |
+
+---
+
+## SOC Insight
+
+This attack demonstrates a typical brute force scenario where:
+
+* An attacker attempts multiple failed logins (Event ID 4625)
+* Eventually gains access (Event ID 4624)
+* Uses RDP as an entry point into the system
+
+This is a common real-world attack pattern used by threat actors to gain initial access or move laterally within a network.
+
+---
+
 # 4) OpenVPN Brute Force Attack
 
 This scenario simulates a brute force attack against an OpenVPN service and demonstrates detection and investigation using Splunk SIEM.
