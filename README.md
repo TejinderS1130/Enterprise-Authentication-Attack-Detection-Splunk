@@ -385,7 +385,7 @@ The attacker machine attempted multiple authentication attempts against the VPN 
 
 ```bash
 sudo openvpn ~/Desktop/pfSense-UDP4-1194-vpnuser-config.ovpn
-````
+```
 
 <img src="screenshots/vpn/Figure1_VPN_Attack_Terminal.png" width="1000">
 
