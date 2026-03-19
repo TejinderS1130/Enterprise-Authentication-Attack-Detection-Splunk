@@ -301,12 +301,11 @@ Failed RDP login attempts were identified using Windows Security Event Logs:
 * Source IP: attacker machine
 
 ```spl
-index=windows EventCode=4625
-| stats count by Source_Network_Address
-| sort -count
+index=windows (EventCode=4625 OR EventCode=4624)
+| stats count by Source_Network_Address EventCode
 ```
 
-<img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="1000">
+<img src="screenshots/rdp/Figure8_RDP_BruteForce_Alert.png" width="1000">
 
 ---
 
@@ -314,15 +313,7 @@ index=windows EventCode=4625
 
 A Splunk alert was configured to trigger when failed login attempts exceeded a threshold.
 
-```spl
-index=windows EventCode=4625
-| stats count by Source_Network_Address Account_Name
-| where count > 5
-| sort -count
-```
-
-<img src="screenshots/rdp/Figure8_RDP_BruteForce_Alert.png" width="1000">
-
+<img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="1000">
 ---
 
 ## SOC Investigation
@@ -336,7 +327,8 @@ Further analysis shows:
 ```spl
 index=windows EventCode=4625
 | eval src_ip=coalesce(Source_Network_Address, Client_Address)
-| stats count values(Account_Name) as targeted_accounts by src_ip
+| search src_ip!="-" src_ip!="127.0.0.1"
+| stats count by src_ip Account_Name Workstation_Name Logon_Type
 | sort -count
 ```
 
@@ -344,15 +336,16 @@ index=windows EventCode=4625
 
 ---
 
-## Advanced Detection (Time-Based)
+## Advanced Detection & Account Correlation
 
 ```spl
 index=windows EventCode=4625
-| bucket _time span=1m
-| stats count by _time Source_Network_Address
-| where count > 4
+| eval src_ip=coalesce(Source_Network_Address, Client_Address)
+| search src_ip!="-" src_ip!="127.0.0.1"
+| stats count values(Account_Name) as targeted_accounts by src_ip Workstation_Name
+| sort -count
 ```
-
+<img src="screenshots/rdp/Figure13_Event_Correlation_View.png" width="1000">
 ---
 
 
