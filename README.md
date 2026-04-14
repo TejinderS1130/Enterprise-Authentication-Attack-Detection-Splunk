@@ -1,6 +1,13 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/SIEM-Splunk-blue?style=for-the-badge&logo=splunk"/>
+  <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20pfSense-black?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Focus-Threat%20Detection-orange?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/MITRE-ATT%26CK-red?style=for-the-badge"/>
+</p>
+
 # Enterprise Authentication Attack Detection with Splunk
 
-Enterprise SOC detection lab demonstrating authentication attack detection across Linux, Windows, and VPN infrastructure using Splunk SIEM.
+Simulated a multi-stage authentication attack across Linux, Windows, and VPN environments, and performed SOC-level detection, correlation, and investigation using Splunk SIEM.
 
 ---
 
@@ -37,6 +44,19 @@ This lab replicates a **real-world enterprise SOC environment** with:
 - **DMZ Zone** → Public-facing service (OpenVPN)  
 - **Internal LAN** → Endpoints (Windows, Linux)  
 - **SOC Zone** → Security monitoring (Splunk SIEM)
+
+---
+
+## Attack Sequence & Correlation Analysis
+
+| Stage | Event | Source |
+|------|------|--------|
+| 1 | High volume SSH failed login attempts detected | Linux |
+| 2 | Password spray targeting multiple user accounts observed | Linux |
+| 3 | Repeated RDP authentication failures detected (Event ID 4625) | Windows |
+| 4 | Successful authentication observed (Event ID 4624) | Windows |
+| 5 | Multiple VPN authentication failures (AUTH_FAILED) detected | pfSense |
+| 6 | Correlation of attacker IP (192.168.1.60) across all systems | Splunk |
 
 ---
 
@@ -123,13 +143,15 @@ This lab replicates a **real-world enterprise SOC environment** with:
 
 ## SOC Perspective
 
-This lab demonstrates key SOC capabilities:
+This project emphasizes detection of attack patterns and cross-system correlation rather than isolated alerts, reflecting real-world SOC investigation workflows.
 
-* Multi-source log correlation
-* Authentication attack detection
-* Realistic attacker simulation
-* End-to-end detection workflow
-* SIEM-driven investigation
+It demonstrates key SOC capabilities, including:
+
+* Multi-source log correlation across Linux, Windows, and network infrastructure  
+* Detection of credential-based attacks (brute force, password spraying, VPN abuse)  
+* Identification and tracking of attacker activity using a consistent source IP  
+* End-to-end detection, investigation, and validation workflow  
+* SIEM-driven analysis and alerting using Splunk  
 
 ---
 
