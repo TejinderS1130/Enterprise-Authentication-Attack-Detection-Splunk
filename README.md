@@ -1,3 +1,5 @@
+# Enterprise Authentication Attack Detection with Splunk
+
 <p align="center">
   <img src="https://img.shields.io/badge/SIEM-Splunk-blue?style=for-the-badge&logo=splunk"/>
   <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20pfSense-black?style=for-the-badge"/>
@@ -5,7 +7,6 @@
   <img src="https://img.shields.io/badge/MITRE-ATT%26CK-red?style=for-the-badge"/>
 </p>
 
-# Enterprise Authentication Attack Detection with Splunk
 
 Simulated a multi-stage authentication attack across Linux, Windows, and VPN environments, and performed SOC-level detection, correlation, and investigation using Splunk SIEM.
 
