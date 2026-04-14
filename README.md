@@ -471,25 +471,33 @@ index=pfsense ("AUTH_FAILED" OR "connected")
 
 ## Outcome
 
-* Detected repeated VPN authentication failures
-* Identified attacker IP address
-* Correlated failed and successful login attempts
-* Simulated real-world VPN attack scenario
-* Demonstrated SOC-level detection and investigation workflow
+* Detected repeated VPN authentication failures from a single external source
+* Identified attacker IP address: 192.168.1.60
+* Correlated failed and successful authentication events across multiple systems
+* Validated credential-based attack patterns across Linux, Windows, and VPN services
+* Demonstrated end-to-end SOC detection, correlation, and investigation workflow
 
 ---
 
 ## Cross-Platform SOC Insight
 
-Across all scenarios (SSH, RDP, VPN), the same attacker IP **192.168.1.60** was observed:
+Across all scenarios (SSH, RDP, VPN), the same attacker IP **192.168.1.60** was consistently observed:
 
-- Performing brute force attacks on Linux (SSH)
-- Targeting multiple accounts (password spray)
-- Attempting RDP authentication on Windows
-- Attacking VPN authentication
+- Conducting SSH brute force attacks against Linux systems  
+- Performing password spray attacks targeting multiple user accounts  
+- Attempting RDP authentication against Windows endpoints  
+- Generating repeated VPN authentication failures  
 
-This demonstrates a **real-world attack pattern**, where a threat actor targets multiple entry points within an environment.
+This behavior reflects a **real-world credential-based attack pattern**, where a threat actor systematically targets multiple entry points within an environment to gain access.
 
-Such activity can be detected through **cross-source correlation in SIEM**, a key capability of modern SOC operations.
+Through **cross-source correlation in Splunk SIEM**, these activities were linked to a single threat actor, demonstrating the importance of centralized logging and multi-source visibility in SOC operations.
 
 ---
+
+## Summary
+
+A multi-stage authentication attack was identified involving brute force, password spraying, and coordinated access attempts across multiple services.
+
+The attacker (192.168.1.60) targeted SSH, RDP, and VPN services, exhibiting credential-based attack behavior and cross-system activity consistent with early-stage intrusion attempts.
+
+While no confirmed internal pivoting was observed, the attack pattern demonstrates **lateral movement behavior** through credential reuse across multiple systems.
