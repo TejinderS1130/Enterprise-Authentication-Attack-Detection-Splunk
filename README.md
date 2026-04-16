@@ -27,6 +27,16 @@ All attack activity is ingested and analyzed in Splunk SIEM.
 
 ---
 
+## Key Highlights
+
+- Multi-vector attack detection (SSH, RDP, VPN, Password Spray)  
+- Cross-platform log correlation (Linux, Windows, Network)  
+- Detection engineering using Splunk SPL  
+- Real-world SOC investigation workflow  
+- Incident response and mitigation strategies
+
+---
+
 # Lab Architecture
 
 This lab replicates a **real-world enterprise SOC environment** with:
@@ -58,6 +68,14 @@ This lab replicates a **real-world enterprise SOC environment** with:
 | 4 | Successful authentication observed (Event ID 4624) | Windows |
 | 5 | Multiple VPN authentication failures (AUTH_FAILED) detected | pfSense |
 | 6 | Correlation of attacker IP (192.168.1.60) across all systems | Splunk |
+
+---
+
+## Cross-Platform Correlation (SOC View)
+
+<img src="./screenshots/rdp/Figure13_Event_Correlation_View.png" width="800"/>
+
+This view shows the same attacker IP (192.168.1.60) observed across multiple systems, confirming coordinated attack activity across Linux, Windows, and VPN environments.
 
 ---
 
@@ -164,19 +182,19 @@ This scenario simulates an SSH brute force attack from an external attacker and 
 
 ## Attack Simulation
 
-<img src="screenshots/ssh/Figure1_Hydra_Attack.png" width="1000">
+<img src="screenshots/ssh/Figure1_Hydra_Attack.png" width="800">
 
 ---
 
 ## Detection in Splunk
 
-<img src="screenshots/ssh/Figure2-Splunk_Detection.png" width="1000">
+<img src="screenshots/ssh/Figure2-Splunk_Detection.png" width="800">
 
 ---
 
 ## Alert Triggered
 
-<img src="screenshots/ssh/Figure3-Alert_Triggered.png" width="1000">
+<img src="screenshots/ssh/Figure3-Alert_Triggered.png" width="800">
 
 ---
 
@@ -184,7 +202,7 @@ This scenario simulates an SSH brute force attack from an external attacker and 
 
 **Attacker IP:** 192.168.1.60
 
-<img src="screenshots/ssh/Figure4- Alert_Details.png" width="1000">
+<img src="screenshots/ssh/Figure4- Alert_Details.png" width="800">
 
 ---
 
@@ -230,7 +248,7 @@ This scenario simulates a password spray attack where a single attacker attempts
 
 The attacker used a list of usernames to attempt authentication using the same password.
 
-<img src="screenshots/password_spray/figure1_password_spray_attack.png" width="1000">
+<img src="screenshots/password_spray/figure1_password_spray_attack.png" width="800">
 
 ---
 
@@ -238,7 +256,7 @@ The attacker used a list of usernames to attempt authentication using the same p
 
 Detection focuses on identifying a single source IP targeting multiple distinct user accounts.
 
-<img src="screenshots/password_spray/figure2_splunk_detection.png" width="1000">
+<img src="screenshots/password_spray/figure2_splunk_detection.png" width="800">
 
 ---
 
@@ -246,7 +264,7 @@ Detection focuses on identifying a single source IP targeting multiple distinct 
 
 An alert is generated when multiple accounts are targeted from the same source IP.
 
-<img src="screenshots/password_spray/figure3_alert_triggered.png" width="1000">
+<img src="screenshots/password_spray/figure3_alert_triggered.png" width="800">
 
 ---
 
@@ -256,7 +274,7 @@ The investigation confirms multiple distinct user accounts targeted from attacke
 
 **192.168.1.60**
 
-<img src="screenshots/password_spray/figure4_investigation.png" width="1000">
+<img src="screenshots/password_spray/figure4_investigation.png" width="800">
 
 ---
 
@@ -310,9 +328,9 @@ xfreerdp /v:192.168.1.20 /u:Administrator
 
 A custom password list was used to simulate brute force attempts.
 
-<img src="screenshots/rdp/Figure2_Nmap_RDP_Port_Scan.png" width="1000">
+<img src="screenshots/rdp/Figure2_Nmap_RDP_Port_Scan.png" width="800">
 
-<img src="screenshots/rdp/Figure4_RDP_BruteForce_Attempt.png" width="1000">
+<img src="screenshots/rdp/Figure4_RDP_BruteForce_Attempt.png" width="800">
 
 ---
 
@@ -328,7 +346,7 @@ index=windows (EventCode=4625 OR EventCode=4624)
 | stats count by Source_Network_Address EventCode
 ```
 
-<img src="screenshots/rdp/Figure8_RDP_BruteForce_Alert.png" width="1000">
+<img src="screenshots/rdp/Figure8_RDP_BruteForce_Alert.png" width="800">
 
 ---
 
@@ -336,7 +354,7 @@ index=windows (EventCode=4625 OR EventCode=4624)
 
 A Splunk alert was configured to trigger when failed login attempts exceeded a threshold.
 
-<img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="1000">
+<img src="screenshots/rdp/Figure5_Splunk_Raw_Security_Events.png" width="800">
 
 ---
 
@@ -356,7 +374,7 @@ index=windows EventCode=4625
 | sort -count
 ```
 
-<img src="screenshots/rdp/Figure12_Targeted_Accounts.png" width="1000">
+<img src="screenshots/rdp/Figure12_Targeted_Accounts.png" width="800">
 
 ---
 
@@ -369,7 +387,7 @@ index=windows EventCode=4625
 | stats count values(Account_Name) as targeted_accounts by src_ip Workstation_Name
 | sort -count
 ```
-<img src="screenshots/rdp/Figure13_Event_Correlation_View.png" width="1000">
+<img src="screenshots/rdp/Figure13_Event_Correlation_View.png" width="800">
 
 ---
 
@@ -410,7 +428,7 @@ The attacker machine attempted multiple authentication attempts against the VPN 
 sudo openvpn ~/Desktop/pfSense-UDP4-1194-vpnuser-config.ovpn
 ```
 
-<img src="screenshots/vpn/Figure1_VPN_Attack_Terminal.png" width="1000">
+<img src="screenshots/vpn/Figure1_VPN_Attack_Terminal.png" width="800">
 
 ---
 
@@ -427,7 +445,7 @@ index=pfsense "AUTH_FAILED"
 | sort -count
 ```
 
-<img src="screenshots/vpn/Figure2_VPN_Failed_Logs.png" width="1000">
+<img src="screenshots/vpn/Figure2_VPN_Failed_Logs.png" width="800">
 
 ---
 
@@ -442,7 +460,7 @@ index=pfsense "AUTH_FAILED"
 | where count > 5
 ```
 
-<img src="screenshots/vpn/Figure3_VPN_BruteForce_Detection.png" width="1000">
+<img src="screenshots/vpn/Figure3_VPN_BruteForce_Detection.png" width="800">
 
 ---
 
@@ -461,7 +479,7 @@ index=pfsense "connected"
 | table _time user src_ip
 ```
 
-<img src="screenshots/vpn/Figure4_VPN_Success_Login.png" width="1000">
+<img src="screenshots/vpn/Figure4_VPN_Success_Login.png" width="800">
 
 ---
 
@@ -479,7 +497,7 @@ index=pfsense ("AUTH_FAILED" OR "connected")
 | where failures >= 5 AND success >= 1
 ```
 
-<img src="screenshots/vpn/Figure5_VPN_Correlation.png" width="1000">
+<img src="screenshots/vpn/Figure5_VPN_Correlation.png" width="800">
 
 ---
 
@@ -516,6 +534,24 @@ This behavior reflects a **real-world credential-based attack pattern**, where a
 Through **cross-source correlation in Splunk SIEM**, these activities were linked to a single threat actor, demonstrating the importance of centralized logging and multi-source visibility in SOC operations.
 
 ---
+
+## Detailed SOC Case Study
+
+This project includes a full SOC investigation report covering detection, correlation, and response actions.
+
+👉 [View Full Incident Report](./reports/incident-report.md)
+
+---
+
+## Tools & Technologies
+
+- Splunk SIEM  
+- Kali Linux (Attack Simulation)  
+- Windows Event Logs  
+- Linux Authentication Logs  
+- pfSense Firewall (OpenVPN)
+
+ ---
 
 ## Summary
 
