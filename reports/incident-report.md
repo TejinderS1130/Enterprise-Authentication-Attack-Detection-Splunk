@@ -1,6 +1,6 @@
 # SOC Incident Report: Multi-Vector Authentication Attack
 
-> Simulated multi-vector authentication attack detected and investigated using Splunk SIEM with cross-platform correlation (Linux, Windows, VPN).
+> Simulated a multi-vector authentication attack detected and investigated using Splunk SIEM with cross-platform correlation (Linux, Windows, VPN).
 
 ---
 
@@ -123,15 +123,15 @@ This behavior indicates:
 ---
 
 ### Detection Improvements
-- Implement geo-location anomaly detection  
-- Establish behavioral baselines per user  
-- Tune detection thresholds based on environment-specific activity  
+- Implemented geo-location anomaly detection  
+- Established behavioral baselines per user  
+- Tuned detection thresholds based on environment-specific activity  
 
 ---
 
 ## Incident Severity
 
--> Classified as **HIGH severity incident**
+➡️ Classified as **HIGH severity incident**
 
 **Justification:**
 - Multi-system targeting  
